@@ -22,7 +22,7 @@
         //Mutates the array that is being reduced as a way of ending the loop immediately.
         //We already found a duplicate, no need to continue looping.
         array.splice(1);
-        return newFrequency
+        return newFrequency;
       } else {
         return [newFrequency, ...acc];
       }
