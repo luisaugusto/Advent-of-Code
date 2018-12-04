@@ -41,7 +41,7 @@
   fetch('input.txt')
     .then(res => res.text())
     //Converts the text data into an array and removes any non-number values, like empty strings.
-    .then(data => data.split('\n').filter(number => parseInt(number)))
+    .then(data => data.split('\n').filter(number => Number(number)))
     .then(numbers => {
       console.log(`The sum of all numbers in the list is ${sum(numbers)}`);
       console.log(`The first frequency in the loop is ${firstFrequency(numbers)}`);
