@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Day 2</title>
+</head>
+<body>
+
+<script>
+  //Part One: Find the Checksum
+  const checkSum = (ids, multipliers) => {
+    const sumCounter = {};
+
+    ids.forEach(id => {
+      const letterCounter = {};
+
+      //Split each id into an array of letters and count how often each letter appears
+      id.split('').forEach(letter => {
+        if (letter in letterCounter) letterCounter[letter]++;
+        else letterCounter[letter] = 1;
+      });
+
+      //Check if this id has any letter count that matches a number in the multiplier array
+      for (let key in letterCounter) {
+        const v = letterCounter[key];
+
+        //If multiple letters have the same count (i.e., three letters appear twice),
+        //We don't want it to count this ID three times for the 2 multiplier
+        //So we add a property and check for it in the conditional
+        if (multipliers.includes(v) && !letterCounter.hasOwnProperty(v)) {
+          if (v in sumCounter) sumCounter[v]++;
+          else sumCounter[v] = 1;
+
+          letterCounter[v] = true;
+        }
+      }
+    });
+
+    return multipliers.reduce((acc, num) => acc * sumCounter[num], 1);
+  };
+
+  const commonId = ids => {
+    const similarities = {};
+
+    ids.forEach(id => {
+      id.split('').forEach((letter, index) => {
+        similarities[index] = ids.filter(fId => fId[index] == letter);
+      });
+    });
+
+    return similarities;
+  };
+
+  //Retrieve the data from the list and run the two functions
+  fetch('input.txt')
+    .then(res => res.text())
+    //Converts the text data into an array and removes any non-number values, like empty strings.
+    .then(data => data.split('\n'))
+    .then(ids => {
+      console.log(`The checksum for this set of IDs is ${checkSum(ids, [2, 3])}`);
+      console.table(commonId(ids));
+    });
+</script>
+
+</body>
+</html>
