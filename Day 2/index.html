@@ -93,7 +93,7 @@
     .then(data => data.split('\n'))
     .then(ids => {
       console.log(`The checksum for this set of IDs is ${checkSum(ids, [2, 3])}`);
-      console.log(commonId(ids));
+      console.log(`The common letters between the two most similar box IDs is ${commonId(ids)}`);
     });
 </script>
 
