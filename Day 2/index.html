@@ -9,10 +9,16 @@
 <script>
   //Part One: Find the Checksum
   const checkSum = (ids, multipliers) => {
+    //Count the number of words that have a count of any letter matching one of the multipliers
     const sumCounter = {};
+    multipliers.forEach(number => sumCounter[number] = 0);
 
     ids.forEach(id => {
-      const letterCounter = {};
+      //Count how often a letter appears in an id
+      //Number counted determines if a particular number in the multiplier has been accounted for
+      const letterCounter = {
+        numberCounted: {}
+      };
 
       //Split each id into an array of letters and count how often each letter appears
       id.split('').forEach(letter => {
@@ -21,17 +27,19 @@
       });
 
       //Check if this id has any letter count that matches a number in the multiplier array
-      for (let key in letterCounter) {
-        const v = letterCounter[key];
+      for (let letter in letterCounter) {
+        //How many times did this letter appear
+        const number = letterCounter[letter];
 
-        //If multiple letters have the same count (i.e., three letters appear twice),
-        //We don't want it to count this ID three times for the 2 multiplier
-        //So we add a property and check for it in the conditional
-        if (multipliers.includes(v) && !letterCounter.hasOwnProperty(v)) {
-          if (v in sumCounter) sumCounter[v]++;
-          else sumCounter[v] = 1;
+        //Is this a number we are looking for in the multiplier array
+        if (number in sumCounter) {
+          //If multiple letters have the same count (i.e., three letters appear twice),
+          //We don't want it to count this ID three times for the 2 multiplier
+          //So we add a property and check for it in the conditional
+          if (number in letterCounter.numberCounted) continue;
 
-          letterCounter[v] = true;
+          sumCounter[number]++;
+          letterCounter.numberCounted[number] = true;
         }
       }
     });
@@ -42,13 +50,40 @@
   const commonId = ids => {
     const similarities = {};
 
+    let mostSimilar = {
+      id1: '',
+      id2: '',
+      count: 0
+    };
+
     ids.forEach(id => {
+      similarities[id] = {};
+
       id.split('').forEach((letter, index) => {
-        similarities[index] = ids.filter(fId => fId[index] == letter);
+        const matchingIDs = ids.filter(fId => fId[index] === letter && fId !== id);
+
+        matchingIDs.forEach(matchingId => {
+          const counter = similarities[id];
+
+          if (counter.hasOwnProperty(matchingId)) counter[matchingId]++;
+          else counter[matchingId] = 1;
+        });
       });
+
+      for (let simId in similarities[id]) {
+        if (similarities[id][simId] <= mostSimilar.count) continue;
+        mostSimilar = {
+          id1: id,
+          id2: simId,
+          count: similarities[id][simId]
+        }
+      }
     });
 
-    return similarities;
+    return mostSimilar.id1.split('').reduce((acc, letter, index) => {
+      if (letter === mostSimilar.id2[index]) return acc + letter;
+      else return acc;
+    }, '');
   };
 
   //Retrieve the data from the list and run the two functions
@@ -58,7 +93,7 @@
     .then(data => data.split('\n'))
     .then(ids => {
       console.log(`The checksum for this set of IDs is ${checkSum(ids, [2, 3])}`);
-      console.table(commonId(ids));
+      console.log(commonId(ids));
     });
 </script>
 
