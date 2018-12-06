@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Day 2</title>
+</head>
+<body>
+
+<script>
+  const coordinates = claims => {
+    return claims.map(claim => {
+      //Find all numbers in the string, output them as an array,
+      //Change the array of number strings into number values,
+      //Remove the first item since it's just the ID of the claim and not necessary
+      let [x, y, width, height] = claim.match(/\d+/g).map(Number).splice(1);
+      const coordinates = [];
+
+
+
+      return claim;
+    });
+  };
+
+  const overlap = coordinates => {
+
+  };
+
+  //Retrieve the data from the list and run the two functions
+  fetch('input.txt')
+    .then(res => res.text())
+    //Converts the text data into an array and removes any non-number values, like empty strings.
+    .then(data => data.split('\n'))
+    .then(claims => coordinates(claims))
+    .then(coordinates => {
+      console.log(coordinates);
+      //console.log(`There are ${overlap(coordinates)} square inches of overlapping fabric.`);
+    });
+</script>
+
+</body>
+</html>
