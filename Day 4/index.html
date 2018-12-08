@@ -7,11 +7,14 @@
 <body>
 
 <script>
+  //Regex to get all digits from a string
   const extractNumbers = claim => claim.match(/\d+/g).map(Number);
 
   //Part 1:
-  const analyzeGuards = log => {
+  const analyzeGuards = (log, method) => {
     const guards = {};
+
+    //Used to keep track of which guard is asleep or awake during the loop
     const currentGuard = {
       id: 0,
       sleepTime: 0
@@ -35,7 +38,52 @@
       }
     });
 
-    return guards;
+    return findSleepiestGuard(guards, method);
+  };
+
+  const findSleepiestGuard = (guards, method) => {
+    //Method should be 'by total sleep' or 'by minute'.
+    //The first option is used for part one, and the second option is used for part two.
+    let sleepyGuard = {
+      id: 0,
+      timeAsleep: 0,
+      mostFreqMin: {
+        min: 0,
+        freq: 0
+      }
+    };
+
+    for (let guard in guards) {
+      const timestamps = guards[guard];
+
+      if (method === 'by total sleep') {
+        if (timestamps.length <= sleepyGuard.timeAsleep) continue;
+
+        sleepyGuard.id = guard;
+        sleepyGuard.timeAsleep = timestamps.length;
+        sleepyGuard.mostFreqMin.min = 0;
+        sleepyGuard.mostFreqMin.freq = 0;
+      }
+
+      const timeDistribution = {};
+      timestamps.forEach(minute => {
+        timeDistribution[minute] =  (timeDistribution[minute] || 0) + 1;
+
+        if (timeDistribution[minute] > sleepyGuard.mostFreqMin.freq) {
+
+          if (method === 'by minute') {
+            sleepyGuard.id = guard;
+            sleepyGuard.timeAsleep = timestamps.length;
+          }
+
+          sleepyGuard.mostFreqMin.min = minute;
+          sleepyGuard.mostFreqMin.freq = timeDistribution[minute];
+        }
+      });
+    }
+
+    const byTotalSleep = method === 'by total sleep' ? `asleep the most at ${sleepyGuard.timeAsleep} minutes. They were ` : ``;
+    return `Guard #${sleepyGuard.id} was ${byTotalSleep}most frequently asleep at 00:${sleepyGuard.mostFreqMin.min}, a total of ${sleepyGuard.mostFreqMin.freq} minutes. The ID of the guard multiplied by the most frequent minute is ${sleepyGuard.id * sleepyGuard.mostFreqMin.min}`;
   };
 
   //Retrieve the data from the list and run the two functions
@@ -43,8 +91,8 @@
     .then(res => res.text())
     .then(data => data.split('\n').sort())
     .then(log => {
-      console.log(log);
-      console.log(analyzeGuards(log));
+      console.log(analyzeGuards(log, 'by total sleep'));
+      console.log(analyzeGuards(log, 'by minute'));
     });
 </script>
 

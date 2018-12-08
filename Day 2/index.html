@@ -22,8 +22,7 @@
 
       //Split each id into an array of letters and count how often each letter appears
       id.split('').forEach(letter => {
-        if (letter in letterCounter) letterCounter[letter]++;
-        else letterCounter[letter] = 1;
+        letterCounter[letter] = (letterCounter[letter] || 0) + 1;
       });
 
       //Check if this id has any letter count that matches a number in the multiplier array
@@ -64,9 +63,7 @@
 
         matchingIDs.forEach(matchingId => {
           const counter = similarities[id];
-
-          if (counter.hasOwnProperty(matchingId)) counter[matchingId]++;
-          else counter[matchingId] = 1;
+          counter[matchingId] = (counter[matchingId] || 0) + 1;
         });
       });
 
