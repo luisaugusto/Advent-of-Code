@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Day 4</title>
+</head>
+<body>
+
+<script>
+  const extractNumbers = claim => claim.match(/\d+/g).map(Number);
+
+  //Part 1:
+  const analyzeGuards = log => {
+    const guards = {};
+    const currentGuard = {
+      id: 0,
+      sleepTime: 0
+    };
+
+    log.forEach(entry => {
+      let [,,,, min, guard] = extractNumbers(entry);
+      if (guard) currentGuard.id = guard;
+      if ( !(currentGuard.id in guards) ) guards[currentGuard.id] = [];
+
+      if (entry.includes('falls asleep')) {
+        currentGuard.sleepTime = min;
+      }
+
+      if (entry.includes('wakes up')) {
+        const sleepDuration = min - currentGuard.sleepTime;
+
+        [...Array(sleepDuration)].forEach((_, minute) => {
+          guards[currentGuard.id].push(minute + currentGuard.sleepTime);
+        });
+      }
+    });
+
+    return guards;
+  };
+
+  //Retrieve the data from the list and run the two functions
+  fetch('input.txt')
+    .then(res => res.text())
+    .then(data => data.split('\n').sort())
+    .then(log => {
+      console.log(log);
+      console.log(analyzeGuards(log));
+    });
+</script>
+
+</body>
+</html>
