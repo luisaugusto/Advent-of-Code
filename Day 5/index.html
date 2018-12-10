@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Day 4</title>
+</head>
+<body>
+
+<script>
+  const isOppositeCase = (a, b) => a.toLowerCase() === a ? b.toUpperCase() === b : b.toLowerCase() === b;
+  const reducePolymer = polymer => {
+    console.log(polymer)
+    const newPolymer =  polymer.split('').reduce((acc, letter, index, arr) => {
+      const nextLetter = arr[index + 1];
+
+      //Check if the next two letters are the same and different casing
+      if (letter.toLowerCase() === nextLetter && isOppositeCase(letter, nextLetter)) {
+        console.log(`removing ${letter} and ${nextLetter} at index ${index}`);
+        arr.splice(index, 2);
+        return acc;
+      } else {
+        return [...acc, letter];
+      }
+    }, []).join('');
+    return newPolymer;
+  };
+
+  //Retrieve the data from the list and run the two functions
+  fetch('input.txt')
+    .then(res => res.text())
+    .then(input => {
+      const test = 'dabAcCaCBAcCcaDA';
+      console.log(reducePolymer(test));
+    });
+</script>
+
+</body>
+</html>
