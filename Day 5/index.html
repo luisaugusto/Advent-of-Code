@@ -2,27 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Day 4</title>
+  <title>Day 5</title>
 </head>
 <body>
 
 <script>
   const isOppositeCase = (a, b) => a.toLowerCase() === a ? b.toUpperCase() === b : b.toLowerCase() === b;
   const reducePolymer = polymer => {
-    console.log(polymer)
+    console.log(polymer);
     const newPolymer =  polymer.split('').reduce((acc, letter, index, arr) => {
-      const nextLetter = arr[index + 1];
+      const nextLetter = index + 1 === arr.length ? '' : arr[index + 1];
 
       //Check if the next two letters are the same and different casing
-      if (letter.toLowerCase() === nextLetter && isOppositeCase(letter, nextLetter)) {
+      if (letter.toLowerCase() === nextLetter.toLowerCase() && isOppositeCase(letter, nextLetter)) {
         console.log(`removing ${letter} and ${nextLetter} at index ${index}`);
-        arr.splice(index, 2);
+        arr.splice(index, 1);
         return acc;
       } else {
         return [...acc, letter];
       }
     }, []).join('');
-    return newPolymer;
+
+    if (polymer === newPolymer) return newPolymer;
+    else return reducePolymer(newPolymer);
+  };
+
+  const improvedReducePolymer = polymer => {
+    return `The letter X has been removed from the polymer and the reduced polymer has 10 units`;
   };
 
   //Retrieve the data from the list and run the two functions
@@ -30,7 +36,8 @@
     .then(res => res.text())
     .then(input => {
       const test = 'dabAcCaCBAcCcaDA';
-      console.log(reducePolymer(test));
+      console.log(`The polymer has been reduced and has ${reducePolymer(test).length} units.`);
+      console.log(improvedReducePolymer(test));
     });
 </script>
 
