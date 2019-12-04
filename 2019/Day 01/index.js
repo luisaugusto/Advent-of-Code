@@ -19,10 +19,6 @@ const sumOfFuelReqs = (masses, recurse = false) => masses.reduce((acc, mass) => 
 
 const fuelReqs = mass => Math.floor(mass / 3) - 2;
 
-const recursiveFuelReqs = mass => {
-
-}
-
 const text = fs.readFileSync('input.txt', 'utf8');
 const masses = text.split('\n');
 
