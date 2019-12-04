@@ -1,3 +1,4 @@
+console.time('Time to Calculate');
 const fs = require('fs');
 const debug = false;
 
@@ -82,7 +83,6 @@ const findUniqueClaim = claims => {
 const text = fs.readFileSync('input.txt', 'utf8');
 const claims = text.split('\n');
 
-console.time('Time to Calculate');
 console.log(`There are ${overlappedCoordinates(claims)} square inches of overlapping fabric.`);
 console.log(`The claim with all unique coordinates is ${findUniqueClaim(claims)}`);
 console.timeEnd('Time to Calculate');

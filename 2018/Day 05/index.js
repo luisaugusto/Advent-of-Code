@@ -1,3 +1,4 @@
+console.time('Time to Calculate');
 const fs = require('fs');
 const debug = false;
 
@@ -29,7 +30,6 @@ const improvedReducePolymer = polymer => {
 const text = fs.readFileSync('input.txt', 'utf8');
 const test = 'dabAcCaCBAcCcaDA';
 
-console.time('Time to Calculate');
 console.log(`The polymer has been reduced and has ${reducePolymer(text).length} units.`);
 console.log(improvedReducePolymer(test));
 console.timeEnd('Time to Calculate');

@@ -1,3 +1,4 @@
+console.time('Time to Calculate');
 const fs = require('fs');
 
 //Regex to get all digits from a string
@@ -82,7 +83,6 @@ const findSleepiestGuard = (guards, method) => {
 const text = fs.readFileSync('input.txt', 'utf8');
 const textArray = text.split('\n').sort();
 
-console.time('Time to Calculate');
 console.log(analyzeGuards(textArray, 'by total sleep'));
 console.log(analyzeGuards(textArray, 'by minute'));
 console.timeEnd('Time to Calculate');

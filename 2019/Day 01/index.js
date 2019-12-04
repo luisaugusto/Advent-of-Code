@@ -1,3 +1,4 @@
+console.time('Time to Calculate');
 const fs = require('fs');
 
 const sumOfFuelReqs = (masses, recurse = false) => masses.reduce((acc, mass) => {

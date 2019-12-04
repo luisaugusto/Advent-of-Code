@@ -1,3 +1,4 @@
+console.time('Time to Calculate');
 const fs = require('fs');
 
 const runIntcode = array => {
@@ -63,7 +64,6 @@ const calibrateIntcode = (desiredResult, array) => {
 const text = fs.readFileSync('input.txt', 'utf8');
 const integers = text.split(',').map(Number);
 
-console.time('Time to Calculate');
 console.log(`The value at position 0 is ${ runIntcode(integers)[0] }`);
 console.log(`The result after calibrating the intcode to 19690720 is ${ calibrateIntcode(19690720, integers) }`)
 console.timeEnd('Time to Calculate');

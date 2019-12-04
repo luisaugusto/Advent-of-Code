@@ -1,3 +1,4 @@
+console.time('Time to Calculate');
 const fs = require('fs');
 
 //Part One: Find the sum of all numbers in the list
@@ -33,7 +34,6 @@ const firstFrequency = (numbers, prev = [0]) => {
 const text = fs.readFileSync('input.txt', 'utf8');
 const numbers = text.split('\n');
 
-console.time('Time to Calculate');
 console.log(`The sum of all numbers in the list is ${sum(numbers)}`);
 console.log(`The first frequency in the loop is ${firstFrequency(numbers)}`);
 console.timeEnd('Time to Calculate');

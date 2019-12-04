@@ -1,3 +1,4 @@
+console.time('Time to Calculate');
 const fs = require('fs');
 
 //Part One: Find the Checksum
@@ -80,7 +81,6 @@ const commonId = ids => {
 const text = fs.readFileSync('input.txt', 'utf8');
 const ids = text.split('\n');
 
-console.time('Time to Calculate');
 console.log(`The checksum for this set of IDs is ${checkSum(ids, [2, 3])}`);
 console.log(`The common letters between the two most similar box IDs is ${commonId(ids)}`);
 console.timeEnd('Time to Calculate');
